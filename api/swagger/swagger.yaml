@@ -1,0 +1,156 @@
+# Author : Nikethan Selvanathan
+# Date : 07/01/2016
+
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:6001
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  #- https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  
+  /getAuthorizationURL:
+    x-swagger-router-controller: CalendarAuthorizationController
+    get:
+      description: Get Authorization URL for Calender API
+      operationId: getAuthorizationURL
+      tags:
+        - authorization
+      responses:
+        200:
+          description: List of packages
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: Server error.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /setAuthorization/{authorizationCode}:
+    x-swagger-router-controller: CalendarAuthorizationController
+    get:
+      description: set the Authorization code got from URL
+      operationId: setAuthorizationCode
+      tags:
+        - authorization
+      parameters:
+        - name: authorizationCode
+          in: path
+          description: Type of package for filtering
+          type: string
+          required: true
+      responses:
+        200:
+          description: List of packages
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: Server error.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /addCalendarEntry/{timezoneContinent}/{timezoneCountry}:
+    x-swagger-router-controller: CalendarController
+    get:
+      description: Add a new Event to calendar
+      operationId: addEvent
+      tags:
+        - calendar
+      parameters:
+        - name: timezoneContinent
+          in: path
+          description: Type of package for filtering
+          type: string
+          required: true
+        - name: timezoneCountry
+          in: path
+          description: Type of package for filtering
+          type: string
+          required: true
+      responses:
+        200:
+          description: List of packages
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: Server error.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /updateEvent/{calendarId}:
+    x-swagger-router-controller: CalendarController
+    get:
+      description: Update an Event from the calendar
+      operationId: updateEvent
+      tags:
+        - calendar
+      parameters:
+        - name: calendarId
+          in: path
+          description: Type of package for filtering
+          type: string
+          required: true
+      responses:
+        200:
+          description: List of packages
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: Server error.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /deleteEvent/{calendarId}:
+    x-swagger-router-controller: CalendarController
+    get:
+      description: Delete an Event from the calendar
+      operationId: deleteEvent
+      tags:
+        - calendar
+      parameters:
+        - name: calendarId
+          in: path
+          description: Type of package for filtering
+          type: string
+          required: true
+      responses:
+        200:
+          description: List of packages
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: Server error.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+
+  SuccessResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
